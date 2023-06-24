@@ -1,0 +1,21 @@
+# Use a NodeJS base image
+FROM node:14
+
+# Set the working directory inside the container
+WORKDIR /dockerise_me
+
+# Copy the package.json and package-lock.json files separately
+# to leverage Docker caching when dependencies don't change   
+COPY package*.json ./
+
+# Install the application dependencies
+RUN npm ci
+
+# Copy the rest of the application files
+COPY . .
+
+# Expose port 8080 for communication
+EXPOSE 8080
+
+# Run the NodeJS application
+CMD ["node", "main.js"]
